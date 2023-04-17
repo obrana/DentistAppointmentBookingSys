@@ -40,10 +40,7 @@ class BookingForm extends React.Component {
   toggleCalendar = () => {
     this.setState({ showCalendar: !this.state.showCalendar });
   };
-handleSubmit = event => {
-    alert("booking completed");
 
-}
   render() {
     return (
         <div className="container">
