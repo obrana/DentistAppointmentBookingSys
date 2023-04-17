@@ -1,0 +1,45 @@
+.booking-form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .booking-form label {
+    font-weight: bold;
+  }
+  
+  .booking-form input[type="text"],
+  .booking-form input[type="time"] {
+    border: 1px solid #ddd;
+    padding: 5px;
+  }
+  
+  .booking-form input[type="text"]:focus,
+  .booking-form input[type="time"]:focus {
+    outline: none;
+    border-color: #1e90ff;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+  }
+  
+  .booking-form button[type="submit"] {
+    background-color: #1e90ff;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .booking-form button[type="submit"]:hover {
+    background-color: #007bff;
+  }
+  
+  .calendar {
+    position: absolute;
+    z-index: 1;
+    top: 35px;
+    left: 0;
+  }
+  
