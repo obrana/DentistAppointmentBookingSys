@@ -2,9 +2,10 @@ import React from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './BookingForm.css';
+import { Button, Form } from 'react-bootstrap';
 
 class BookingForm extends React.Component {
-   
+
   state = {
     date: '',
     time: '',
@@ -12,9 +13,9 @@ class BookingForm extends React.Component {
     bookings: []
   };
 
-  componentDidMount(){
+  componentDidMount() {
     const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-    this.setState({bookings});
+    this.setState({ bookings });
 
   }
   handleDateChange = date => {
@@ -58,41 +59,63 @@ class BookingForm extends React.Component {
     alert('Booking submitted successfully');
     this.setState({ date: '', time: '' });
   };
-  
+
 
   render() {
     return (
-        <div className="container">
+      <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">
             <h1>IT Offer Dental Appoinment Booking System</h1>
-            <form className="booking-form" onSubmit={this.handleSubmit}>
+
+            <Form onSubmit={this.handleSubmit} className="mt-5 p-4 border border-2 border-secondary rounded">
+              <h2>Book an appointment</h2>
               <div className="form-group">
-                <label htmlFor="date-input">Date:</label>
+                <label htmlFor="dateInput">Date:</label>
                 <div className="input-group">
-                  <input id="date-input" type="text" value={this.state.date} onClick={this.toggleCalendar} readOnly className="form-control" />
-                  <div className="input-group-append">
-                    <span className="input-group-text"><i className="fas fa-calendar-alt"></i></span>
-                  </div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="dateInput"
+                    placeholder="YYYY-MM-DD"
+                    value={this.state.date}
+                    onChange={() => { }}
+                    onClick={this.toggleCalendar}
+                    readOnly
+                  />
+                  <Button type="button" className="btn btn-outline-secondary" onClick={this.toggleCalendar}>
+                    <i className="bi bi-calendar"></i>
+                  </Button>
                 </div>
-                {this.state.showCalendar && <Calendar className="calendar" value={this.state.date} onChange={this.handleDateChange} />}
+                {this.state.showCalendar && <Calendar onChange={this.handleDateChange} />}
               </div>
               <div className="form-group">
-                <label htmlFor="time-input">Time:</label>
-                <input id="time-input" type="time" value={this.state.time} onChange={this.handleTimeChange} className="form-control" />
+                <label htmlFor="timeInput">Time:</label>
+                <input
+                  type="time"
+                  className="form-control"
+                  id="timeInput"
+                  value={this.state.time}
+                  onChange={this.handleTimeChange}
+                />
               </div>
-              <button type="submit" className="btn btn-primary btn-block">Book Appointment</button>
-            </form>
+              <Button variant="primary" type="submit">
+                Book Appointment
+              </Button>
+              <div className="mt-4">
+                <h2>Bookings</h2>
+                <ul className="list-group">
+                  {JSON.parse(localStorage.getItem('bookings') || '[]').map((booking, index) => (
+                    <li className="list-group-item" key={index}>
+                      <strong>Date:</strong> {booking.date} <br />
+                      <strong>Time:</strong> {booking.time}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Form>
           </div>
-        </div>
-        <div>
-            <h1> Booking list</h1>
-            {this.state.bookings.map((booking, index) => (
-              <div key = {index}>
-                <p>Date : {booking.date}</p>
-                <p>Time: {booking.time}</p>
-                </div>
-            ))}
+
         </div>
       </div>
     );
