@@ -4,12 +4,19 @@ import 'react-calendar/dist/Calendar.css';
 import './BookingForm.css';
 
 class BookingForm extends React.Component {
+   
   state = {
     date: '',
     time: '',
-    showCalendar: false
+    showCalendar: false,
+    bookings: []
   };
 
+  componentDidMount(){
+    const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    this.setState({bookings});
+
+  }
   handleDateChange = date => {
     // Validate the date
     const today = new Date().setHours(0, 0, 0, 0);
@@ -41,12 +48,24 @@ class BookingForm extends React.Component {
     this.setState({ showCalendar: !this.state.showCalendar });
   };
 
+  handleSubmit = event => {
+    event.preventDefault();
+    const { date, time } = this.state;
+    const booking = { date, time };
+    const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    bookings.push(booking);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+    alert('Booking submitted successfully');
+    this.setState({ date: '', time: '' });
+  };
+  
+
   render() {
     return (
         <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">
-            <h1>IT Offfer Dental Appoinment Booking System</h1>
+            <h1>IT Offer Dental Appoinment Booking System</h1>
             <form className="booking-form" onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="date-input">Date:</label>
@@ -65,6 +84,15 @@ class BookingForm extends React.Component {
               <button type="submit" className="btn btn-primary btn-block">Book Appointment</button>
             </form>
           </div>
+        </div>
+        <div>
+            <h1> Booking list</h1>
+            {this.state.bookings.map((booking, index) => (
+              <div key = {index}>
+                <p>Date : {booking.date}</p>
+                <p>Time: {booking.time}</p>
+                </div>
+            ))}
         </div>
       </div>
     );
