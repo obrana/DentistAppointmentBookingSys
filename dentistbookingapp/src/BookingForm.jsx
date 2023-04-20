@@ -4,6 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import './BookingForm.css';
 import { Button, Form } from 'react-bootstrap';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import BookingList from './BookingList';
 
 
 
@@ -90,58 +91,22 @@ class BookingForm extends React.Component {
     return (
       <div className="container">
         <div className="booking-form">
-          <div className="row justify-content-center">
+         
             <div className="col-md-6">
               <h1>IT Offer Dental Appoinment Booking System</h1>
-              {/* <Form onSubmit={this.handleSubmit}>
-                {this.state.step === 1 && (
-                  <personalInformation
-                    name={this.state.name}
-                    email={this.state.email}
-                    phone={this.state.phone}
-                    onNameChange={this.handleNameChange}
-                    onEmailChange={this.handleEmailChange}
-                    onPhoneChange={this.handlePhoneChange}
-                  />
-                )}
-
-                {this.state.step === 2 && (
-                  <appointment date={this.state.date}
-                    time={this.state.time}
-                    onDaateChange={this.handleDateChange}
-                    onTimeChange={this.handleTimeChange}
-                  />
-
-                )}
-                <div className="row">
-                  <div className="col text-center">
-                    {this.state.step > 1 && (
-                      <button type="button" className="btn btn-secondary mr-2" onClick={() => this.setState({ step: this.state.step - 1 })}>
-                        Previous
-                      </button>
-                    )}
-                    {this.state.step < 2 ? (
-                      <button type="button" className="btn btn-primary" onClick={() => this.setState({ step: this.state.step + 1 })}>
-                        Next
-                      </button>
-                    ) : (
-                      <button type="submit" className="btn btn-primary">
-                        Book Appointment
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </Form> */}
                <Form onSubmit={this.handleSubmit}>
               <h2>Book an appointment</h2>
-              <Form.Group controlId="formTime">
+              <Form.Group controlId="formName">
+              <Form.Label>Name:</Form.Label>
                 <Form.Control type="text" placeholder="Enter Your Name" required="true"  value={this.state.name} onChange={this.handleNameChange}/>
               </Form.Group>
-              <Form.Group controlId="formTime">
+              <Form.Group controlId="formEmail">
+              <Form.Label>Email:</Form.Label>
                 <Form.Control type="text" placeholder="Enter Your Email" required="true" value={this.state.email} onChange={this.handleEmailChange}/>
               </Form.Group>
-              <Form.Group controlId="formTime">
-                <Form.Control type="number" placeholder="Enter Your Phone Number" required="true"value={this.state.phone} onChange={this.handlePhoneChange} />
+              <Form.Group controlId="formNumber">
+              <Form.Label>Phone Number:</Form.Label>
+                <Form.Control type="text" placeholder="Enter Your Phone Number" required="true"value={this.state.phone} onChange={this.handlePhoneChange} />
               </Form.Group>
               <Form.Group controlId="formDate">
                 <Form.Label>Date:</Form.Label>
@@ -152,39 +117,27 @@ class BookingForm extends React.Component {
                   onClick={this.toggleCalendar}
                   InputProps={{ readOnly: true }}
                   variant="outlined"
+                  placeholder="YYYY-MM-DD"
                 />
                 <i class="fa-regular fa-calendar" onClick={this.toggleCalendar}></i>
                 {this.state.showCalendar && <Calendar onChange={this.handleDateChange} />}
               </Form.Group>
 
               <Form.Group controlId="formTime">
-                <Form.Control type="time" value={this.state.time} onChange={this.handleTimeChange} required="true" />
+              <Form.Label>Time:</Form.Label>
+                <Form.Control type="time" placeholder="HH:MM" value={this.state.time} onChange={this.handleTimeChange} required="true" />
               </Form.Group>
               <Button variant="primary" type="submit">
                 Book Appointment
               </Button> 
 
-
-              <div className="mt-4">
-                <h2>Bookings</h2>
-                <ul className="list-group">
-                  {JSON.parse(localStorage.getItem('bookings') || '[]').map((booking, index) => (
-                    <li className="list-group-item" key={index}>
-                       <strong>Name:</strong> {booking.name} <br />
-                       <strong>Email:</strong> {booking.email} <br />
-                       <strong>Phone Number:</strong> {booking.phone} <br />
-                      <strong>Date:</strong> {booking.date} <br />
-                      <strong>Time:</strong> {booking.time}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+<BookingList/>
               </Form>
             </div>
 
           </div>
         </div>
-      </div>
+    
     );
   }
 }
