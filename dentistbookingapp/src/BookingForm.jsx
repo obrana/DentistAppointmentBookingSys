@@ -3,12 +3,18 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './BookingForm.css';
 import { Button, Form } from 'react-bootstrap';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
 
 class BookingForm extends React.Component {
 
   state = {
     date: '',
     time: '',
+    name: '',
+    email: '',
+    phone: '',
     showCalendar: false,
     bookings: []
   };
@@ -44,78 +50,139 @@ class BookingForm extends React.Component {
     }
     this.setState({ time });
   };
+  handleNameChange = (event) => {
+    this.setState({name: event.target.value});
+
+  };
+
+  handleEmailChange = (event) => {
+    this.setState({ email: event.target.value });
+  };
+  handlePhoneChange = (event) => {
+    this.setState({ phone: event.target.value })
+  };
 
   toggleCalendar = () => {
     this.setState({ showCalendar: !this.state.showCalendar });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    const { date, time } = this.state;
-    const booking = { date, time };
+    const { date, time, name, email, phone } = this.state;
+    const booking = { date, time, name, email, phone };
     const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
     bookings.push(booking);
     localStorage.setItem('bookings', JSON.stringify(bookings));
     alert('Booking submitted successfully');
-    this.setState({ date: '', time: '' });
+    this.setState({
+      personalInformation: 1,
+      date: '',
+      time: '',
+      name: '',
+      phone: '',
+      email: '',
+
+    });
   };
 
 
   render() {
     return (
       <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <h1>IT Offer Dental Appoinment Booking System</h1>
-
-            <Form onSubmit={this.handleSubmit} className="mt-5 p-4 border border-2 border-secondary rounded">
-              <h2>Book an appointment</h2>
-              <div className="form-group">
-                <label htmlFor="dateInput">Date:</label>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="dateInput"
-                    placeholder="YYYY-MM-DD"
-                    value={this.state.date}
-                    onChange={() => { }}
-                    onClick={this.toggleCalendar}
-                    readOnly
+        <div className="booking-form">
+          <div className="row justify-content-center">
+            <div className="col-md-6">
+              <h1>IT Offer Dental Appoinment Booking System</h1>
+              {/* <Form onSubmit={this.handleSubmit}>
+                {this.state.step === 1 && (
+                  <personalInformation
+                    name={this.state.name}
+                    email={this.state.email}
+                    phone={this.state.phone}
+                    onNameChange={this.handleNameChange}
+                    onEmailChange={this.handleEmailChange}
+                    onPhoneChange={this.handlePhoneChange}
                   />
-                  <Button type="button" className="btn btn-outline-secondary" onClick={this.toggleCalendar}>
-                    <i className="bi bi-calendar"></i>
-                  </Button>
+                )}
+
+                {this.state.step === 2 && (
+                  <appointment date={this.state.date}
+                    time={this.state.time}
+                    onDaateChange={this.handleDateChange}
+                    onTimeChange={this.handleTimeChange}
+                  />
+
+                )}
+                <div className="row">
+                  <div className="col text-center">
+                    {this.state.step > 1 && (
+                      <button type="button" className="btn btn-secondary mr-2" onClick={() => this.setState({ step: this.state.step - 1 })}>
+                        Previous
+                      </button>
+                    )}
+                    {this.state.step < 2 ? (
+                      <button type="button" className="btn btn-primary" onClick={() => this.setState({ step: this.state.step + 1 })}>
+                        Next
+                      </button>
+                    ) : (
+                      <button type="submit" className="btn btn-primary">
+                        Book Appointment
+                      </button>
+                    )}
+                  </div>
                 </div>
-                {this.state.showCalendar && <Calendar onChange={this.handleDateChange} />}
-              </div>
-              <div className="form-group">
-                <label htmlFor="timeInput">Time:</label>
+              </Form> */}
+               <Form onSubmit={this.handleSubmit}>
+              <h2>Book an appointment</h2>
+              <Form.Group controlId="formTime">
+                <Form.Control type="text" placeholder="Enter Your Name" required="true"  value={this.state.name} onChange={this.handleNameChange}/>
+              </Form.Group>
+              <Form.Group controlId="formTime">
+                <Form.Control type="text" placeholder="Enter Your Email" required="true" value={this.state.email} onChange={this.handleEmailChange}/>
+              </Form.Group>
+              <Form.Group controlId="formTime">
+                <Form.Control type="number" placeholder="Enter Your Phone Number" required="true"value={this.state.phone} onChange={this.handlePhoneChange} />
+              </Form.Group>
+              <Form.Group controlId="formDate">
+                <Form.Label>Date:</Form.Label>
                 <input
-                  type="time"
-                  className="form-control"
-                  id="timeInput"
-                  value={this.state.time}
-                  onChange={this.handleTimeChange}
+                  id="date"
+                  type="text"
+                  value={this.state.date}
+                  onClick={this.toggleCalendar}
+                  InputProps={{ readOnly: true }}
+                  variant="outlined"
                 />
-              </div>
+                <i class="fa-regular fa-calendar" onClick={this.toggleCalendar}></i>
+                {this.state.showCalendar && <Calendar onChange={this.handleDateChange} />}
+              </Form.Group>
+
+              <Form.Group controlId="formTime">
+                <Form.Control type="time" value={this.state.time} onChange={this.handleTimeChange} required="true" />
+              </Form.Group>
               <Button variant="primary" type="submit">
                 Book Appointment
-              </Button>
+              </Button> 
+
+
               <div className="mt-4">
                 <h2>Bookings</h2>
                 <ul className="list-group">
                   {JSON.parse(localStorage.getItem('bookings') || '[]').map((booking, index) => (
                     <li className="list-group-item" key={index}>
+                       <strong>Name:</strong> {booking.name} <br />
+                       <strong>Email:</strong> {booking.email} <br />
+                       <strong>Phone Number:</strong> {booking.phone} <br />
                       <strong>Date:</strong> {booking.date} <br />
                       <strong>Time:</strong> {booking.time}
                     </li>
                   ))}
                 </ul>
               </div>
-            </Form>
-          </div>
+              </Form>
+            </div>
 
+          </div>
         </div>
       </div>
     );
