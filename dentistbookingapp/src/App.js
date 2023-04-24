@@ -2,7 +2,6 @@
 import './App.css';
 
 import BookingFrom from './BookingForm';
-import BookingProgress from './BookingProgress';
 import ProgressForm from './Progress/ProgressForm';
 
 
@@ -11,7 +10,7 @@ function App() {
     <div className="App">
   
 <BookingFrom/>
-  
+
     </div>
   );
 }
